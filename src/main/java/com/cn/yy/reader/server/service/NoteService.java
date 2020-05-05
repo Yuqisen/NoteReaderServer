@@ -173,11 +173,11 @@ public class NoteService {
    * @param entity 阅读记录
    */
   public void updateClientRecord(ClientRecordEntity entity) {
-    ClientRecordEntity dbEntity = clientRecordRepository.findFirstByNoteIdEqualsAndImeiEquals(entity.getNoteId(), entity.getImei());
+    ClientRecordEntity dbEntity = clientRecordRepository.findFirstByNoteIdEqualsAndImeiEquals(entity.getNoteId(), RuntimeInfo.getImei());
     if (dbEntity == null) {
       dbEntity = new ClientRecordEntity();
       dbEntity.setNoteId(entity.getNoteId());
-      dbEntity.setImei(entity.getImei());
+      dbEntity.setImei(RuntimeInfo.getImei());
     }
     dbEntity.setSectionId(entity.getSectionId());
     clientRecordRepository.save(dbEntity);
