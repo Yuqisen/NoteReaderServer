@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mapper.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.yy.reader.server.mapper.NoteMapper">
+
+  <resultMap type="com.cn.yy.reader.server.model.LocalNoteInfo" id="BaseResultMap">
+    <result column="section_id" property="lastSectionId" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="note_type" property="noteType" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="VARCHAR" />
+    <result column="last_section" property="lastSection" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    DISTINCT CR.section_id, N.id, N.name, N.url, N.author, N.note_type, N.last_update_time, N.last_section, N.path
+    FROM client_note CN
+    LEFT JOIN client_record CR
+        ON CN.note_id=CR.note_id AND CN.imei=CR.imei
+    LEFT JOIN note N
+        ON CN.note_id=N.id
+    WHERE  CN.imei=#{imei}
+  </select>
+
+</mapper>

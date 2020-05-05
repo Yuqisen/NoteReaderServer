@@ -2,11 +2,13 @@ package com.cn.yy.reader.server.service;
 
 import com.cn.yy.reader.server.client.BiqugeClient;
 import com.cn.yy.reader.server.common.config.AppProperties;
+import com.cn.yy.reader.server.config.RuntimeInfo;
 import com.cn.yy.reader.server.domain.ClientRecordEntity;
 import com.cn.yy.reader.server.domain.NoteEntity;
 import com.cn.yy.reader.server.domain.SectionEntity;
+import com.cn.yy.reader.server.mapper.NoteMapper;
+import com.cn.yy.reader.server.model.LocalNoteInfo;
 import com.cn.yy.reader.server.model.NoteInfo;
-import com.cn.yy.reader.server.model.SectionDetail;
 import com.cn.yy.reader.server.model.SectionDisplay;
 import com.cn.yy.reader.server.model.SectionInfo;
 import com.cn.yy.reader.server.repository.ClientRecordRepository;
@@ -21,8 +23,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +45,9 @@ public class NoteService {
 
   @Autowired
   ClientRecordRepository clientRecordRepository;
+
+  @Autowired
+  NoteMapper noteMapper;
 
   @Autowired
   AppProperties appProperties;
@@ -77,8 +80,11 @@ public class NoteService {
    * 查询本地小说列表
    * @return 本地小说列表
    */
-  public List<NoteEntity> findLocalNoteList() {
-    return noteRepository.findAllByNameIsNotNullOrderByInsertTimeDesc();
+  public List<LocalNoteInfo> findLocalNoteList() {
+//    System.err.println(RuntimeInfo.getImei());
+//    List<ClientNoteEntity> clientNotes = clientNoteRepository.findAllByImeiEqualsOrderByInsertTimeDesc(RuntimeInfo.getImei());
+//    return noteRepository.findAllByNameIsNotNullOrderByInsertTimeDesc();
+    return noteMapper.findAll(RuntimeInfo.getImei());
   }
 
   /**

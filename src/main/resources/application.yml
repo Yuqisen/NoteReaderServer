@@ -1,3 +1,7 @@
+mybatis:
+  config-location: classpath:mybatis.xml
+  mapper-locations: classpath*:mapper/*.xml
+
 spring:
   datasource:
     url: ${DATASOURCE_URL:jdbc:mysql://47.94.220.127:3306/yt_reader?useUnicode=true&allowMultiQueries=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai}
@@ -5,6 +9,10 @@ spring:
     password: ${DATASOURCE_PASSWORD:HCWzEr4X9F@2VnJUV}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+logging:
+  config: classpath:logging/logging.xml
+
 app:
   server:
     upload_path: ${UPLOAD_PATH:/upload/}
+

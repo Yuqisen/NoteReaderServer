@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+  <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+  <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+  <property name="LOG_FILE_MAX_SIZE" value="${LOG_FILE_MAX_SIZE:-10MB}"/>
+  <property name="LOG_FILE_MAX_HISTORY" value="${LOG_FILE_MAX_HISTORY:-0}"/>
+
+  <property name="DEFAULT_LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+  <property name="ACCESS_LOG_FILE" value="${ACCESS_LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/access.log}"/>
+
+  <!-- 控制台输出 -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 基本日志文件 -->
+  <appender name="DefaultFSAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- %-40.40logger{39} : %m%n%wEx</pattern>
+    </encoder>
+    <file>${DEFAULT_LOG_FILE}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${DEFAULT_LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+      <maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
+      <maxHistory>${LOG_FILE_MAX_HISTORY:-30}</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <!-- 访问监控日志文件 -->
+  <appender name="ApplicationAccessFSAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+      <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} -- %-7.7logger{6} : %m%n%wEx</pattern>
+    </encoder>
+    <file>${ACCESS_LOG_FILE}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${ACCESS_LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+      <maxFileSize>${LOG_FILE_MAX_SIZE:-${LOG_FILE_MAX_SIZE}}</maxFileSize>
+      <maxHistory>${LOG_FILE_MAX_HISTORY:-${LOG_FILE_MAX_HISTORY}}</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+
+  <logger name="com.cn.yy.reader.server.config.CorsFilter" level="INFO" additivity="false">
+    <appender-ref ref="ApplicationAccessFSAppender" />
+  </logger>
+  <root level="${DEFAULT_LOG_LEVEL:-INFO}" additivity="false">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="DefaultFSAppender" />
+  </root>
+
+</configuration>

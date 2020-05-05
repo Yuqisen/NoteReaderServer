@@ -3,6 +3,7 @@ package com.cn.yy.reader.server.web;
 import com.cn.yy.reader.server.domain.ClientRecordEntity;
 import com.cn.yy.reader.server.domain.NoteEntity;
 import com.cn.yy.reader.server.domain.SectionEntity;
+import com.cn.yy.reader.server.model.LocalNoteInfo;
 import com.cn.yy.reader.server.model.SectionDisplay;
 import com.cn.yy.reader.server.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class NoteController {
   }
 
   @GetMapping(value = "/localList", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public List<NoteEntity> findLocalNoteList() {
+  public List<LocalNoteInfo> findLocalNoteList() {
     return noteService.findLocalNoteList();
   }
 
